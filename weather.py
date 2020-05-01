@@ -24,7 +24,8 @@ def get_weather(condition_url=wttr_url):
         current_condition = condition.json()['current_condition'][0]
         moon_phase = condition.json()['weather'][0]['astronomy'][0]['moon_phase']
         # https://en.wikipedia.org/wiki/Lunar_phase
-        report = ['Condition: ' + current_condition['weatherDesc'][0]['value'],
+        report = [datetime.now(local_time).ctime(),
+                  'Condition: ' + current_condition['weatherDesc'][0]['value'],
                   'TEMP: ' + current_condition['temp_C'] + 'C',
                   'RH: ' + current_condition['humidity'] + '%',
                   'Moon: ' + moon_phase
