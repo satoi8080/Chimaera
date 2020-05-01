@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 
 from config import *
-from requests.exceptions import Timeout
+from requests.exceptions import Timeout, ConnectionError
 import time
 import requests
 import scrollphathd
 
 
-def get_weather(condition_url):
+def get_weather(condition_url=wttr_url):
     try:
         condition = requests.get(condition_url, timeout=5)
     except Timeout:
@@ -15,11 +15,16 @@ def get_weather(condition_url):
             'Request Timeout, Check Network Connection.'
         ]
         print('Request Timeout, Check Network Connection.')
+    except ConnectionError:
+        report = [
+            'Connection Error, Check Network Connection.'
+        ]
+        print('Connection Error, Check Network Connection.')
     else:
         current_condition = condition.json()['current_condition'][0]
         moon_phase = condition.json()['weather'][0]['astronomy'][0]['moon_phase']
         # https://en.wikipedia.org/wiki/Lunar_phase
-        report = [current_condition['weatherDesc'][0]['value'],
+        report = ['Condition: ' + current_condition['weatherDesc'][0]['value'],
                   'TEMP: ' + current_condition['temp_C'] + 'C',
                   'RH: ' + current_condition['humidity'] + '%',
                   'Moon: ' + moon_phase
@@ -28,13 +33,12 @@ def get_weather(condition_url):
 
 
 def scroll_once(content=None):
+    scrollphathd.clear()
     if content is None:
-        content = ["In the old #BILGETANK we'll keep you in the know",
-                   "In the old #BILGETANK we'll fix your techie woes",
-                   "And we'll make things",
-                   "And we'll break things",
-                   "'til we're altogether aching",
-                   "Then we'll grab a cup of grog down in the old #BILGETANK"]
+        content = ["I could be bounded in a nutshell,",
+                   "and count myself a king of infinite space.",
+                   "--Hamlet: Act II, scene ii"
+                   ]
     # Build the message
     lines = content
 

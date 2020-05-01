@@ -14,4 +14,4 @@ scrollphathd.set_brightness(0.15)
 rewind = False
 
 # Delay is the time (in seconds) between each pixel scrolled
-delay = 0.03
+delay = 0.02
