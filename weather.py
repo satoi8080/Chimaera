@@ -26,7 +26,7 @@ def get_weather(condition_url=wttr_url):
         # https://en.wikipedia.org/wiki/Lunar_phase
         report = [datetime.now(local_time).ctime(),
                   'Condition: ' + current_condition['weatherDesc'][0]['value'],
-                  'TEMP: ' + current_condition['temp_C'] + 'C',
+                  'T: ' + current_condition['temp_C'] + 'C',
                   'RH: ' + current_condition['humidity'] + '%',
                   'Moon: ' + moon_phase
                   ]

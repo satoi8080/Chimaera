@@ -2,7 +2,7 @@ import scrollphathd
 from datetime import datetime, timedelta, timezone
 
 # Only JSON format is supported in this program, read https://github.com/chubin/wttr.in#json-output
-wttr_url = "https://wttr.in/Tokyo?format=j1"
+wttr_url = "https://wttr.in/Chiyoda?format=j1"
 # Timezone setup
 local_time = timezone(timedelta(hours=+9))
 
