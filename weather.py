@@ -1,23 +1,29 @@
 #!/usr/bin/env python
 
 from config import *
+from requests.exceptions import Timeout
 import time
 import requests
 import scrollphathd
 
-wttr_url = "https://wttr.in/Tokyo?format=j1"
-
 
 def get_weather(condition_url):
-    condition = requests.get(condition_url)
-    current_condition = condition.json()['current_condition'][0]
-    moon_phase = condition.json()['weather'][0]['astronomy'][0]['moon_phase']
-    # https://en.wikipedia.org/wiki/Lunar_phase
-    report = [current_condition['weatherDesc'][0]['value'],
-              'TEMP: ' + current_condition['temp_C'] + 'C',
-              'RH: ' + current_condition['humidity'],
-              'Moon: ' + moon_phase
-              ]
+    try:
+        condition = requests.get(condition_url, timeout=5)
+    except Timeout:
+        report = [
+            'Request Timeout, Check Network Connection.'
+        ]
+        print('Request Timeout, Check Network Connection.')
+    else:
+        current_condition = condition.json()['current_condition'][0]
+        moon_phase = condition.json()['weather'][0]['astronomy'][0]['moon_phase']
+        # https://en.wikipedia.org/wiki/Lunar_phase
+        report = [current_condition['weatherDesc'][0]['value'],
+                  'TEMP: ' + current_condition['temp_C'] + 'C',
+                  'RH: ' + current_condition['humidity'] + '%',
+                  'Moon: ' + moon_phase
+                  ]
     return report
 
 

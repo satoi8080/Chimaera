@@ -1,5 +1,8 @@
 import scrollphathd
 
+# Only JSON format is supported in this program, read https://github.com/chubin/wttr.in#json-output
+wttr_url = "https://wttr.in/Tokyo?format=j1"
+
 # Uncomment the below if your display is upside down
 #   (e.g. if you're using it in a Pimoroni Scroll Bot)
 scrollphathd.rotate(degrees=180)
