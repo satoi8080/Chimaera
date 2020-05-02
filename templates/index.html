@@ -1,0 +1,38 @@
+<html>
+<head><title>Chimaera Control Panel</title></head>
+<body>
+<h1>Chimaera Control Panel</h1>
+<fieldset>
+    <legend><b>Weather Circulation Control</b></legend>
+    <form method="POST" action="/start_weather">
+        <table>
+            <tr>
+                <td><input type="submit" value="Start Weather"></td>
+            </tr>
+        </table>
+    </form>
+    <form method="POST" action="/stop_weather">
+        <table>
+            <tr>
+                <td><input type="submit" value="Stop Weather"></td>
+            </tr>
+        </table>
+    </form>
+
+
+</fieldset>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('form').submit(function (e) {
+            e.preventDefault();
+            $.post($(this).attr('action'), $(this).serialize(), function (result) {
+                console.log(result);
+            });
+            return false;
+        });
+    })
+</script>
+</body>
+</html>

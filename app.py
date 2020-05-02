@@ -1,13 +1,43 @@
-#!/usr/bin/env python
-
+from flask import Flask, render_template
+import scrollphathd
 from config import *
 from requests.exceptions import Timeout, ConnectionError
 import time
 import requests
-import scrollphathd
+import threading
+
+app = Flask(__name__)
+
+global LOOP
+LOOP = True
 
 
-def get_weather(condition_url=wttr_url):
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+
+@app.route('/start_weather', methods=['POST'])
+def start_weather():
+    weather_circulation_thread = threading.Thread(target=weather_circulation(), name='Weather Circulation')
+    weather_circulation_thread.start()
+    return '0'
+
+
+@app.route('/stop_weather', methods=['POST'])
+def stop_weather():
+    global LOOP
+    LOOP = False
+    scrollphathd.clear()
+    return '0'
+
+
+@app.route('/clear', methods=['POST'])
+def clear():
+    return '0'
+
+
+def weather(condition_url=wttr_url):
     try:
         condition = requests.get(condition_url, timeout=5)
     except Timeout:
@@ -33,7 +63,7 @@ def get_weather(condition_url=wttr_url):
     return report
 
 
-def scroll_once(content=None):
+def scroll(content=None):
     scrollphathd.clear()
     if content is None:
         content = ["I could be bounded in a nutshell,",
@@ -99,12 +129,13 @@ def scroll_once(content=None):
                 time.sleep(delay)
 
 
-def infinite_scroll_weather():
+def weather_circulation():
     while True:
-        content = get_weather(wttr_url)
-        scroll_once(content)
+        content = weather(wttr_url)
+        scroll(content)
+        if not LOOP:
+            break
 
 
 if __name__ == '__main__':
-    print("Press Ctrl-C to Escape")
-    infinite_scroll_weather()
+    app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
