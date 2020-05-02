@@ -1,5 +1,3 @@
-
-
 import scrollphathd
 from datetime import datetime, timedelta, timezone
 
@@ -7,7 +5,6 @@ from datetime import datetime, timedelta, timezone
 wttr_url = "https://wttr.in/Chiyoda?format=j1"
 # Timezone setup
 local_time = timezone(timedelta(hours=+9))
-
 
 # Uncomment the below if your display is upside down
 #   (e.g. if you're using it in a Pimoroni Scroll Bot)
