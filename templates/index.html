@@ -1,20 +1,27 @@
-<html>
+<html lang="en-GB">
 <head><title>Chimaera Control Panel</title></head>
 <body>
 <h1>Chimaera Control Panel</h1>
 <fieldset>
     <legend><b>Weather Circulation Control</b></legend>
-    <form method="POST" action="/start_weather">
+    <form method="POST" action={{ url_for('start_weather') }}>
         <table>
             <tr>
                 <td><input type="submit" value="Start Weather"></td>
             </tr>
         </table>
     </form>
-    <form method="POST" action="/stop_weather">
+    <form method="POST" action="{{ url_for('stop_weather') }}">
         <table>
             <tr>
                 <td><input type="submit" value="Stop Weather"></td>
+            </tr>
+        </table>
+    </form>
+    <form method="POST" action="{{ url_for('clear') }}">
+        <table>
+            <tr>
+                <td><input type="submit" value="Clear"></td>
             </tr>
         </table>
     </form>

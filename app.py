@@ -1,17 +1,37 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, url_for
 import scrollphathd
-from config import *
 from requests.exceptions import Timeout, ConnectionError
 import time
 import requests
 import threading
 import os
+import datetime
 
-app = Flask(__name__)
 
+# --------------------------------------------------
+
+# Only JSON format is supported in this program,
+# read https://github.com/chubin/wttr.in#json-output
+WTTR_URL = "https://wttr.in/Chiyoda?format=j1"
+
+# Timezone setup
+LOCAL_TIME_ZONE = datetime.timezone(datetime.timedelta(hours=+9))
+
+# Display setup
+scrollphathd.rotate(degrees=180)
+scrollphathd.set_clear_on_exit()
+scrollphathd.set_brightness(0.1)
+scrollphathd.clear()
+
+REWIND = False
 global LOOP
 LOOP = True
-scrollphathd.clear()
+DELAY = 0.01
+
+
+# --------------------------------------------------
+
+app = Flask(__name__)
 
 
 @app.route('/')
@@ -40,7 +60,7 @@ def clear():
     return '0'
 
 
-def weather(condition_url=wttr_url):
+def weather(condition_url=WTTR_URL):
     try:
         condition = requests.get(condition_url, timeout=5)
     except Timeout:
@@ -61,7 +81,7 @@ def weather(condition_url=wttr_url):
         current_condition = condition.json()['current_condition'][0]
         moon_phase = condition.json()['weather'][0]['astronomy'][0]['moon_phase']
         # https://en.wikipedia.org/wiki/Lunar_phase
-        report = [datetime.now(local_time).ctime(),
+        report = [datetime.datetime.now(LOCAL_TIME_ZONE).ctime(),
                   'Condition: ' + current_condition['weatherDesc'][0]['value'],
                   'T: ' + current_condition['temp_C'] + 'C',
                   'RH: ' + current_condition['humidity'] + '%',
@@ -110,22 +130,22 @@ def scroll(content=None):
 
     for current_line, line_length in enumerate(lengths):
         # Delay a slightly longer time at the start of each line
-        time.sleep(delay * 10)
+        time.sleep(DELAY * 10)
 
         # Scroll to the end of the current line
         for y in range(line_length):
             scrollphathd.scroll(1, 0)
             pos_x += 1
-            time.sleep(delay)
+            time.sleep(DELAY)
             scrollphathd.show()
 
         # If we're currently on the very last line and rewind is True
         # We should rapidly scroll back to the first line.
-        if current_line == len(lines) - 1 and rewind:
+        if current_line == len(lines) - 1 and REWIND:
             for y in range(pos_y):
                 scrollphathd.scroll(-int(pos_x / pos_y), -1)
                 scrollphathd.show()
-                time.sleep(delay)
+                time.sleep(DELAY)
 
         # Otherwise, progress to the next line by scrolling upwards
         else:
@@ -133,13 +153,14 @@ def scroll(content=None):
                 scrollphathd.scroll(0, 1)
                 pos_y += 1
                 scrollphathd.show()
-                time.sleep(delay)
+                time.sleep(DELAY)
 
 
 def weather_circulation():
     while True:
-        content = weather(wttr_url)
+        content = weather(WTTR_URL)
         scroll(content)
+        global LOOP
         if not LOOP:
             break
 
