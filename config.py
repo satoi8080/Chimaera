@@ -6,11 +6,9 @@ wttr_url = "https://wttr.in/Chiyoda?format=j1"
 # Timezone setup
 local_time = timezone(timedelta(hours=+9))
 
-# Uncomment the below if your display is upside down
-#   (e.g. if you're using it in a Pimoroni Scroll Bot)
+# Display setup
 scrollphathd.rotate(degrees=180)
-
-# Dial down the brightness
+scrollphathd.set_clear_on_exit()
 scrollphathd.set_brightness(0.1)
 
 # If rewind is True the scroll effect will rapidly rewind after the last line
@@ -18,3 +16,5 @@ rewind = False
 
 # Delay is the time (in seconds) between each pixel scrolled
 delay = 0.01
+
+

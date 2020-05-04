@@ -5,11 +5,13 @@ from requests.exceptions import Timeout, ConnectionError
 import time
 import requests
 import threading
+import os
 
 app = Flask(__name__)
 
 global LOOP
 LOOP = True
+scrollphathd.clear()
 
 
 @app.route('/')
@@ -19,6 +21,7 @@ def index():
 
 @app.route('/start_weather', methods=['POST'])
 def start_weather():
+    scrollphathd.clear()
     weather_circulation_thread = threading.Thread(target=weather_circulation(), name='Weather Circulation')
     weather_circulation_thread.start()
     return '0'
@@ -42,14 +45,18 @@ def weather(condition_url=wttr_url):
         condition = requests.get(condition_url, timeout=5)
     except Timeout:
         report = [
-            'Request Timeout, Check Network Connection.'
+            'Request Timeout,',
+            'Check Network.'
         ]
-        print('Request Timeout, Check Network Connection.')
+        print('Request Timeout, Check Network.')
+        os.system('sudo /etc/init.d/networking restart')
     except ConnectionError:
         report = [
-            'Connection Error, Check Network Connection.'
+            'Connection Error,',
+            'Check Network.'
         ]
-        print('Connection Error, Check Network Connection.')
+        print('Connection Error, Check Network.')
+        os.system('sudo /etc/init.d/networking restart')
     else:
         current_condition = condition.json()['current_condition'][0]
         moon_phase = condition.json()['weather'][0]['astronomy'][0]['moon_phase']
