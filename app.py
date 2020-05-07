@@ -41,6 +41,8 @@ def index():
 
 @app.route('/start_weather', methods=['POST'])
 def start_weather():
+    global LOOP
+    LOOP = True
     scrollphathd.clear()
     weather_circulation_thread = threading.Thread(target=weather_circulation(), name='Weather Circulation')
     weather_circulation_thread.start()
