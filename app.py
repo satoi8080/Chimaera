@@ -49,16 +49,11 @@ def start_weather():
     return '0'
 
 
-@app.route('/stop_weather', methods=['POST'])
-def stop_weather():
+@app.route('/clear', methods=['POST'])
+def clear():
     global LOOP
     LOOP = False
     scrollphathd.clear()
-    return '0'
-
-
-@app.route('/clear', methods=['POST'])
-def clear():
     return '0'
 
 
@@ -165,6 +160,20 @@ def weather_circulation():
         global LOOP
         if not LOOP:
             break
+
+
+@app.route('/poweroff', methods=['Post'])
+def poweroff():
+    scrollphathd.clear()
+    os.system("sudo poweroff")
+    return '0'
+
+
+@app.route('/reboot', methods=['Post'])
+def reboot():
+    scrollphathd.clear()
+    os.system("sudo reboot")
+    return '0'
 
 
 if __name__ == '__main__':

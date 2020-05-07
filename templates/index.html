@@ -1,5 +1,8 @@
 <html lang="en-GB">
-<head><title>Chimaera Control Panel</title></head>
+<head>
+    <title>Chimaera Control Panel</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.png') }}">
+</head>
 <body>
 <h1>Chimaera Control Panel</h1>
 <fieldset>
@@ -11,17 +14,24 @@
             </tr>
         </table>
     </form>
-    <form method="POST" action="{{ url_for('stop_weather') }}">
-        <table>
-            <tr>
-                <td><input type="submit" value="Stop Weather"></td>
-            </tr>
-        </table>
-    </form>
     <form method="POST" action="{{ url_for('clear') }}">
         <table>
             <tr>
                 <td><input type="submit" value="Clear"></td>
+            </tr>
+        </table>
+    </form>
+    <form method="POST" action="{{ url_for('poweroff') }}">
+        <table>
+            <tr>
+                <td><input type="submit" value="Poweroff"></td>
+            </tr>
+        </table>
+    </form>
+    <form method="POST" action="{{ url_for('reboot') }}">
+        <table>
+            <tr>
+                <td><input type="submit" value="Reboot"></td>
             </tr>
         </table>
     </form>
