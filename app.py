@@ -24,11 +24,9 @@ scrollphathd.set_brightness(0.1)
 scrollphathd.clear()
 
 REWIND = False
-global LOOP
-LOOP = True
 DELAY = 0.01
 
-
+global LOOP
 # --------------------------------------------------
 
 app = Flask(__name__)
@@ -44,6 +42,7 @@ def start_weather():
     global LOOP
     LOOP = True
     scrollphathd.clear()
+    scrollphathd.show()
     weather_circulation_thread = threading.Thread(target=weather_circulation(), name='Weather Circulation')
     weather_circulation_thread.start()
     return '0'
@@ -54,6 +53,7 @@ def clear():
     global LOOP
     LOOP = False
     scrollphathd.clear()
+    scrollphathd.show()
     return '0'
 
 
@@ -135,6 +135,9 @@ def scroll(content=None):
             pos_x += 1
             time.sleep(DELAY)
             scrollphathd.show()
+            global LOOP
+            if not LOOP:
+                break
 
         # If we're currently on the very last line and rewind is True
         # We should rapidly scroll back to the first line.
