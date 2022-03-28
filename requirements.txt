@@ -3,4 +3,4 @@ chardet==4.0.0
 requests==2.27.1
 idna==3.3
 urllib3==1.26.8
-Flask~=2.0.3
+Flask~=2.1.0
